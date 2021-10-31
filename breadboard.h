@@ -3,8 +3,8 @@
 typedef struct resistor_node{
     int resistance;
     int col1, col2, row;
-    resistor_node* next;
-    resistor_node* previous;
+    struct resistor_node* next;
+    struct resistor_node* previous;
 
 } resistor_node;
 
@@ -18,7 +18,7 @@ typedef struct breadboard{
     int columns;
 } breadboard;
 
-int add_resistor(resistor_node *head, int col1, int col2, int row);
+int add_resistor(resistor_node **head, int col1, int col2, int row);
 
 bool is_occupied(resistor_node *head, coordinate point);
 
