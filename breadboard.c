@@ -54,7 +54,27 @@ bool is_occupied(resistor_node *head, coordinate point){
     return false;
 }
 
-bool remove_resistor(resistor_node* head, coordinate point);
+bool remove_resistor(resistor_node **head, coordinate point){
+    resistor_node *current = *head;
+    if (point.y == current->row && (point.x >= current->col1 && point.x <= current->col2)){
+        *head = (*head)->next;
+        (*head)->previous = NULL;
+        free(current);
+        return true;
+    }
+    
+    
+    while (current != NULL){
+        if (point.y == current->row && (point.x >= current->col1 && point.x <= current->col2)){
+            if (current->next !=NULL) current->next->previous = current->previous;
+            current->previous->next = current->next;
+            free(current);
+            return true;
+        }
+        current = current->next;
+    }
+    return false;
+}
 
 void print_board(resistor_node* head, breadboard board){
     resistor_node *current = head;
@@ -64,7 +84,7 @@ void print_board(resistor_node* head, breadboard board){
                 print_resistor(current);
                 j = current->col2;
                 current = current->next;
-            } else printf("O");
+            } else printf("|");
 
 
         }
