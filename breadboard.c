@@ -31,9 +31,7 @@ int add_resistor(resistor_node **head, int c1, int c2, int r1){
     }
     resistor_node *current = (*head);
     while (current->next != NULL){
-        if (new_node->row < current->next->row || (new_node->col1 < current->next->col1 && new_node->row == current->next->row)){
-            break;
-        }
+        if (new_node->row < current->next->row || (new_node->col1 < current->next->col1 && new_node->row == current->next->row)) break;
         current = current->next;   
     }
     new_node->next = current->next;
@@ -58,4 +56,24 @@ bool is_occupied(resistor_node *head, coordinate point){
 
 bool remove_resistor(resistor_node* head, coordinate point);
 
-void print_board(resistor_node* head, breadboard board);
+void print_board(resistor_node* head, breadboard board){
+    resistor_node *current = head;
+    for(int i = 0; i<board.rows; i++){
+        for(int j = 0; j<board.columns; j++){
+            if (current != NULL && i == current->row && j == current->col1){
+                print_resistor(current);
+                j = current->col2;
+                current = current->next;
+            } else printf("O");
+
+
+        }
+        printf("\n");
+
+    }
+}
+
+void print_resistor(resistor_node *node){
+    const char dummy[] = "-------------------";
+    printf("X%.*sX", (node->col2 - node->col1)-1, dummy);
+}

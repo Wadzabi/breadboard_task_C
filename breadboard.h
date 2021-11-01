@@ -26,6 +26,8 @@ bool remove_resistor(resistor_node *head, coordinate point);
 
 void print_board(resistor_node *head, breadboard board);
 
+void print_resistor(resistor_node *node);
+
 
 
 
