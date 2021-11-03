@@ -84,7 +84,7 @@ void print_board(resistor_node* head, breadboard board){
                 print_resistor(current);
                 j = current->col2;
                 current = current->next;
-            } else printf("|");
+            } else printf(" O ");
 
 
         }
@@ -94,6 +94,9 @@ void print_board(resistor_node* head, breadboard board){
 }
 
 void print_resistor(resistor_node *node){
-    const char dummy[] = "-------------------";
-    printf("X%.*sX", (node->col2 - node->col1)-1, dummy);
+    printf(" X-");
+    for(int i = 0; i<(node->col2 - node->col1)-1; i++){
+        printf("---");
+    }
+    printf("-X ");
 }
