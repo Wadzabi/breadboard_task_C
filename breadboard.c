@@ -100,3 +100,48 @@ void print_resistor(resistor_node *node){
     }
     printf("-X ");
 }
+
+bool check_connection(resistor_node *head, breadboard board, int start_col, int end_col){
+    int *columns = (int*)calloc(board.columns, sizeof(int));
+    columns[start_col] = UNCHECKED;
+    int cur_col = start_col;
+    bool new_col_found = true;
+
+    while(new_col_found){
+        new_col_found = false;
+        for(int i = 0; i<board.columns; i++){
+            if (columns[i] == UNCHECKED){
+                //new_col_found = add_connections(columns, i, head);
+                //columns[i] = CHECKED;
+                break;
+            }
+            
+        }
+        if (columns[end_col] != UNCONNECTED){
+            free(columns);
+            return true;
+            } 
+    }
+    free(columns);
+    return false;
+
+}
+
+bool add_connections(int *columns, int col_index, resistor_node *head){
+    bool col_found = false;
+    resistor_node *current = head;
+    while(current != NULL ){
+        if (current->col1 == col_index && columns[current->col2] == UNCONNECTED){
+            columns[current->col2] = UNCHECKED;
+            col_found = true;
+        }
+        else if (current->col2 == col_index && columns[current->col1] == UNCONNECTED) {
+            columns[current->col1] = UNCHECKED;
+            col_found = true;
+        current = current->next;
+    }
+    columns[col_index] = CHECKED;
+    return col_found;
+}
+
+//void add_connections()
