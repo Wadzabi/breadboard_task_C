@@ -122,15 +122,15 @@ bool add_connections(int *columns, int col_index, resistor_node *head){
 bool check_connection(resistor_node *head, breadboard board, int start_col, int end_col){
     int *columns = (int*)calloc(board.columns, sizeof(int));
     columns[start_col] = UNCHECKED;
-    bool new_col_found = true;
+    int cols_found = 1;
 
-    while(new_col_found){
-        new_col_found = false;
+    while(cols_found >0){
+        cols_found = 0;
         for(int i = 0; i<board.columns; i++){
             if (columns[i] == UNCHECKED){
-                new_col_found = add_connections(columns, i, head);
+                cols_found += add_connections(columns, i, head);
                 columns[i] = CHECKED;
-                break;
+                
             }
             
         }
