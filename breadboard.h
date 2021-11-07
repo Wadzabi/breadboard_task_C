@@ -32,6 +32,8 @@ void print_resistor(resistor_node *node);
 
 bool check_connection(resistor_node *head, breadboard board, int col1, int col2);
 
+void free_list(resistor_node *head);
+
 
 
 

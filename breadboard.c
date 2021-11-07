@@ -144,5 +144,15 @@ bool check_connection(resistor_node *head, breadboard board, int start_col, int 
 
 }
 
+void free_list(resistor_node *head){
+    resistor_node *temp;
+
+    while(head != NULL){
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
 
 
