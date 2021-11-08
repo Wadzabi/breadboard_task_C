@@ -2,7 +2,11 @@
 #include <stdio.h>
 #include "breadboard.h"
 
-
+/*
+Function: bb_add_resistor.
+Adds new resistor_node to doubly linked list using sorted insertion.
+Sorted by placement in breadboard going from left to right, top to bottom.
+*/
 int bb_add_resistor(resistor_node **head, int c1, int c2, int r1){
     int temp;
     if(c1>c2){
@@ -13,8 +17,8 @@ int bb_add_resistor(resistor_node **head, int c1, int c2, int r1){
     
     coordinate point = {c1, r1};
 
-    for(;point.x<=c2; point.x++){
-        if(bb_is_occupied((*head), point)) return -1;
+    for(;point.x<=c2; point.x++){                           
+        if(bb_is_occupied((*head), point)) return -1;   //Checks if resistor can be added to slot.
     }
     resistor_node *new_node = (resistor_node*)malloc(sizeof(resistor_node));
     new_node->col1 = c1;
@@ -62,6 +66,11 @@ bool bb_is_occupied(resistor_node *head, coordinate point){
     return false;
 }
 
+/*
+Function: bb_remove_resistor
+Removes resistor if it's covering designated coordinate.
+*/
+
 bool bb_remove_resistor(resistor_node **head, coordinate point){
     if (*head == NULL) return false;
     resistor_node *current = *head;
@@ -84,6 +93,12 @@ bool bb_remove_resistor(resistor_node **head, coordinate point){
     }
     return false;
 }
+
+/*
+Function: bb_print_board
+Prints character for every slot in breadboard. 
+If resistor is encountered it prints the resistor and jumps to resistors end point.
+*/
 
 void bb_print_board(resistor_node* head, breadboard board){
     resistor_node *current = head;
@@ -109,46 +124,56 @@ void print_resistor(resistor_node *node){
     }
     printf("-> ");
 }
-bool add_connections(int *columns, int col_index, resistor_node *head){
+
+/*
+Function: add_connections
+Looks for all resistors connected to selected column.
+If a resistor is found the other connected column is changed to uncheked if not already found. 
+*/
+bool add_connections(int *connected_cols, int col_index, resistor_node *head){
     bool col_found = false;
     resistor_node *current = head;
     while(current != NULL ){
-        if (current->col1 == col_index && columns[current->col2] == UNCONNECTED){
-            columns[current->col2] = UNCHECKED;
+        if (current->col1 == col_index && connected_cols[current->col2] == UNCONNECTED){
+            connected_cols[current->col2] = UNCHECKED;
             col_found = true;
         }
-        else if (current->col2 == col_index && columns[current->col1] == UNCONNECTED) {
-            columns[current->col1] = UNCHECKED;
+        else if (current->col2 == col_index && connected_cols[current->col1] == UNCONNECTED) {
+            connected_cols[current->col1] = UNCHECKED;
             col_found = true;
         }
         current = current->next;
     }
-    columns[col_index] = CHECKED;
+    connected_cols[col_index] = CHECKED;
     return col_found;
 }
 
-
+/*
+Function: bb_check_connection
+Itterates over all columns to look for connections.
+Keeps doing it until no new column is found or the end_col is connected.  
+*/
 bool bb_check_connection(resistor_node *head, breadboard board, int start_col, int end_col){
-    int *columns = (int*)calloc(board.columns, sizeof(int));
-    columns[start_col] = UNCHECKED;
+    int *connected_cols = (int*)calloc(board.columns, sizeof(int));
+    connected_cols[start_col] = UNCHECKED;
     int cols_found = 1;
 
     while(cols_found >0){
         cols_found = 0;
         for(int i = 0; i<board.columns; i++){
-            if (columns[i] == UNCHECKED){
-                cols_found += add_connections(columns, i, head);
-                columns[i] = CHECKED;
+            if (connected_cols[i] == UNCHECKED){
+                cols_found += add_connections(connected_cols, i, head); //Adding to cols_found so later checks dont overwrite earlier results.
+                connected_cols[i] = CHECKED;
                 
             }
             
         }
-        if (columns[end_col] != UNCONNECTED){
-            free(columns);
+        if (connected_cols[end_col] != UNCONNECTED){
+            free(connected_cols);
             return true;
             } 
     }
-    free(columns);
+    free(connected_cols);
     return false;
 
 }
