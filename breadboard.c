@@ -3,7 +3,7 @@
 #include "breadboard.h"
 
 
-int add_resistor(resistor_node **head, int c1, int c2, int r1){
+int bb_add_resistor(resistor_node **head, int c1, int c2, int r1){
     int temp;
     if(c1>c2){
         temp = c2;
@@ -14,7 +14,7 @@ int add_resistor(resistor_node **head, int c1, int c2, int r1){
     coordinate point = {c1, r1};
 
     for(;point.x<=c2; point.x++){
-        if(is_occupied((*head), point)) return -1;
+        if(bb_is_occupied((*head), point)) return -1;
     }
     resistor_node *new_node = (resistor_node*)malloc(sizeof(resistor_node));
     new_node->col1 = c1;
@@ -53,7 +53,7 @@ int add_resistor(resistor_node **head, int c1, int c2, int r1){
 
 }
 
-bool is_occupied(resistor_node *head, coordinate point){
+bool bb_is_occupied(resistor_node *head, coordinate point){
     resistor_node *current = head;
     while (current != NULL){
         if (point.x >= current->col1 && point.x <= current->col2 && point.y == current->row ) return true;
@@ -62,7 +62,7 @@ bool is_occupied(resistor_node *head, coordinate point){
     return false;
 }
 
-bool remove_resistor(resistor_node **head, coordinate point){
+bool bb_remove_resistor(resistor_node **head, coordinate point){
     if (*head == NULL) return false;
     resistor_node *current = *head;
     if (point.y == current->row && (point.x >= current->col1 && point.x <= current->col2)){
@@ -85,7 +85,7 @@ bool remove_resistor(resistor_node **head, coordinate point){
     return false;
 }
 
-void print_board(resistor_node* head, breadboard board){
+void bb_print_board(resistor_node* head, breadboard board){
     resistor_node *current = head;
     for(int i = 0; i<board.rows; i++){
         for(int j = 0; j<board.columns; j++){
