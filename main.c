@@ -14,9 +14,6 @@ int add_R_to_board(breadboard board, resistor_node **resistors){
     printf("\nEnter second x coordinate for resistor: ");
     scanf("%d", &x2);
 
-    printf("test print x1 = %d   x2 = %d   y = %d", x1, x2, y);
-    printf("rows and column values, %d and %d", board.rows, board.columns);
-
     if (!(BETWEEN(x1, board.columns-1, 0) && BETWEEN(x2, board.columns-1, 0) && BETWEEN(y, board.rows-1, 0))) {
         printf("\nOne or more of the points was not within the bounds of the breadboard.\nReturning to menu\n");
         return -1;
@@ -26,7 +23,7 @@ int add_R_to_board(breadboard board, resistor_node **resistors){
         printf("\nTried to place both resistor legs on same point. Not possible.");
         return -1;
     }
-    if(add_resistor(resistors, x1, x2, y) == -1){
+    if(bb_add_resistor(resistors, x1, x2, y) == -1){
         printf("\nResistor could not be added, place is occupied");
         return -1;
     }
@@ -39,10 +36,26 @@ void del_R_from_board(resistor_node **resistors){
     coordinate point;
     printf("Enter coordinates of resistor you want to remove.\nUse format (x, y): ");
     scanf("%d, %d", &point.x, &point.y);
-    remove_resistor(resistors, point);
+    if(bb_remove_resistor(resistors, point)){
+        printf("Resistor was removed!");
+    }else{
+        printf("No resistor could be removed at the selected point.");
+    }
     return;
 }
 
+
+void check_connection(breadboard board, resistor_node *resistors){
+    int start_col, end_col;
+    printf("\nPoints in columns are connected, check for connection between two columns.\nEnter (first_column, second_colomun): ");
+    scanf("%d, %d", &start_col, &end_col);
+    if(bb_check_connection(resistors, board, start_col, end_col)){
+        printf("\nThe columns are connected!");
+    } else{
+        printf("The columns are not connected.");
+    }
+    return;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -70,25 +83,26 @@ int main(int argc, char const *argv[])
 
         switch(menu_option){
             case PRINT_BOARD:
-                printf("board will be printed\n");
-                print_board(resistors, board);
+                printf("\nboard will be printed\n");
+                bb_print_board(resistors, board);
                 break;
             case ADD_RES:
-                printf("\nresistor will be added");
+                printf("\nresistor will be added\n");
                 add_R_to_board(board, &resistors);
                 break;
             case REMOVE_RES:
-                printf("\nresistor will be removed");
+                printf("\nresistor will be removed\n");
                 del_R_from_board(&resistors);
                 break;
             case CHECK_CONNECTION:
-                printf("connection will be checked");
+                printf("\nconnection will be checked\n");
+                check_connection(board, resistors);
                 break;
             case EXIT:
-                printf("exiting program");
+                printf("\nExiting program");
                 return 0;
             default:
-                printf("An Incorrect menu option was selected.");
+                printf("\nAn Incorrect menu option was selected.");
         }
     }
 
