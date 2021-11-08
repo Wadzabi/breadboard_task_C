@@ -1,5 +1,5 @@
 output: main.o breadboard.o
-	gcc main.o breadboard.o -o output
+	gcc main.o breadboard.o -o output -Wall
 
 main.o: main.c
 	gcc -c main.c

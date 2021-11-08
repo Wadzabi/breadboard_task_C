@@ -9,7 +9,7 @@ enum menu_options{PRINT_BOARD = 1, ADD_RES, REMOVE_RES, CHECK_CONNECTION, EXIT};
 
 int add_R_to_board(breadboard board, resistor_node **resistors){
     int x1, x2, y;
-    printf("\nEnter x and y coordinates of the point where you want to place a resistor.\nUse x, y format): ");
+    printf("\nEnter x and y coordinates of the point where you want to place a resistor.\nUse (x, y) format: ");
     scanf("%d, %d", &x1, &y);
     printf("\nEnter second x coordinate for resistor: ");
     scanf("%d", &x2);
@@ -28,8 +28,6 @@ int add_R_to_board(breadboard board, resistor_node **resistors){
         return -1;
     }
     return 0;
-    
-
 }
 
 void del_R_from_board(resistor_node **resistors){
@@ -52,7 +50,7 @@ void check_connection(breadboard board, resistor_node *resistors){
     if(bb_check_connection(resistors, board, start_col, end_col)){
         printf("\nThe columns are connected!");
     } else{
-        printf("The columns are not connected.");
+        printf("\nThe columns are not connected.");
     }
     return;
 }
@@ -74,6 +72,7 @@ int main(int argc, char const *argv[])
     }
     printf("A breadboard has been created. Row and column numbers start at 0. The point 0, 0 is the top left corner.\n");
     printf("Number of rows: %d\nNumber of columns: %d\n", board.rows, board.columns);
+
     resistor_node *resistors = NULL;
     int menu_option;
     
@@ -96,7 +95,7 @@ int main(int argc, char const *argv[])
                 check_connection(board, resistors);
                 break;
             case EXIT:
-                printf("\nExiting program");
+                printf("\nExiting program\n");
                 bb_free_list(resistors);
                 return 0;
             default:
