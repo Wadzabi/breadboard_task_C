@@ -32,7 +32,7 @@ void print_resistor(resistor_node *node);
 
 bool bb_check_connection(resistor_node *head, breadboard board, int start_col, int end_col);
 
-void free_list(resistor_node *head);
+void bb_free_list(resistor_node *head);
 
 
 
