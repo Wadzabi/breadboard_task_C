@@ -4,7 +4,15 @@
 
 
 int add_resistor(resistor_node **head, int c1, int c2, int r1){
+    int temp;
+    if(c1>c2){
+        temp = c2;
+        c2 = c1;
+        c1 = temp;
+    }
+    
     coordinate point = {c1, r1};
+
     for(;point.x<=c2; point.x++){
         if(is_occupied((*head), point)) return -1;
     }
@@ -55,10 +63,11 @@ bool is_occupied(resistor_node *head, coordinate point){
 }
 
 bool remove_resistor(resistor_node **head, coordinate point){
+    if (*head == NULL) return false;
     resistor_node *current = *head;
     if (point.y == current->row && (point.x >= current->col1 && point.x <= current->col2)){
         *head = (*head)->next;
-        (*head)->previous = NULL;
+        if (*head != NULL) (*head)->previous = NULL;
         free(current);
         return true;
     }
