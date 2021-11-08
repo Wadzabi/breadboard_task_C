@@ -100,6 +100,7 @@ int main(int argc, char const *argv[])
                 break;
             case EXIT:
                 printf("\nExiting program");
+                free_list(resistors);
                 return 0;
             default:
                 printf("\nAn Incorrect menu option was selected.");
