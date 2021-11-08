@@ -72,7 +72,8 @@ int main(int argc, char const *argv[])
         printf("Row or column value incorrect. Number of rows and colums has to be a number which is 2 or higher.");
         return -1;
     }
-
+    printf("A breadboard has been created. Row and column numbers start at 0. The point 0, 0 is the top left corner.\n");
+    printf("Number of rows: %d\nNumber of columns: %d\n", board.rows, board.columns);
     resistor_node *resistors = NULL;
     int menu_option;
     
@@ -83,19 +84,15 @@ int main(int argc, char const *argv[])
 
         switch(menu_option){
             case PRINT_BOARD:
-                printf("\nboard will be printed\n");
                 bb_print_board(resistors, board);
                 break;
             case ADD_RES:
-                printf("\nresistor will be added\n");
                 add_R_to_board(board, &resistors);
                 break;
             case REMOVE_RES:
-                printf("\nresistor will be removed\n");
                 del_R_from_board(&resistors);
                 break;
             case CHECK_CONNECTION:
-                printf("\nconnection will be checked\n");
                 check_connection(board, resistors);
                 break;
             case EXIT:
