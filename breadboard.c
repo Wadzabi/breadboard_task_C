@@ -93,7 +93,7 @@ void print_board(resistor_node* head, breadboard board){
                 print_resistor(current);
                 j = current->col2;
                 current = current->next;
-            } else printf(" O ");
+            } else printf(" | ");
 
 
         }
@@ -103,11 +103,11 @@ void print_board(resistor_node* head, breadboard board){
 }
 
 void print_resistor(resistor_node *node){
-    printf(" X-");
+    printf(" <-");
     for(int i = 0; i<(node->col2 - node->col1)-1; i++){
         printf("---");
     }
-    printf("-X ");
+    printf("-> ");
 }
 bool add_connections(int *columns, int col_index, resistor_node *head){
     bool col_found = false;
@@ -128,7 +128,7 @@ bool add_connections(int *columns, int col_index, resistor_node *head){
 }
 
 
-bool check_connection(resistor_node *head, breadboard board, int start_col, int end_col){
+bool bb_check_connection(resistor_node *head, breadboard board, int start_col, int end_col){
     int *columns = (int*)calloc(board.columns, sizeof(int));
     columns[start_col] = UNCHECKED;
     int cols_found = 1;
